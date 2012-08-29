@@ -44,11 +44,11 @@ module ConnectQQ
       # @option opts [int64] :uid 需要获取基本信息的用户UID，默认为当前登录用户
       #
       # @see http://wiki.open.t.qq.com/index.php/%E5%B8%90%E6%88%B7%E7%9B%B8%E5%85%B3/%E8%8E%B7%E5%8F%96%E8%87%AA%E5%B7%B1%E7%9A%84%E8%AF%A6%E7%BB%86%E8%B5%84%E6%96%99
-      #http://open.t.qq.com/api/user/info?format=json
-      #http://open.t.qq.com/api/user/info?oauth_consumer_key=xxxxx&access_token=xxxxxxxxx&openid=xxxxxxxxxx&oauth_version=2.a&scope=all
+      #http://open.t.qq.com/user/info?format=json
+      #http://open.t.qq.com/user/info?oauth_consumer_key=xxxxx&access_token=xxxxxxxxx&openid=xxxxxxxxxx&oauth_version=2.a&scope=all
       def info(opts={})
         #get 'account/profile/basic.json', :params => opts
-        get 'api/user/info', :params => opts.merge(@client.request_params)
+        get 'user/get_user_info', :params => opts.merge(@client.request_params)
       end
 
       # 获取一批人的简单资料
@@ -58,44 +58,44 @@ module ConnectQQ
       # 你需要读取的用户openid列表，用下划线“_”隔开，例如：B624064BA065E01CB73F835017FE96FA_B624064BA065E01CB73F835017FE96FB_B624064BA065E01CB73F835017FE96FC（个数与names保持一致，最多30，可选）
       # names和fopenids至少选一个，若同时存在则以names值为主
       # @see http://wiki.open.t.qq.com/index.php/%E5%B8%90%E6%88%B7%E7%9B%B8%E5%85%B3/%E8%8E%B7%E5%8F%96%E4%B8%80%E6%89%B9%E4%BA%BA%E7%9A%84%E7%AE%80%E5%8D%95%E8%B5%84%E6%96%99
-      #http://open.t.qq.com/api/user/infos?format=json&names=abc,edf,xxx&fopenids=B624064BA065E01CB73F835017FE96FA_B624064BA065E01CB73F835017FE96FB_B624064BA065E01CB73F835017FE96FC
+      #http://open.t.qq.com/user/infos?format=json&names=abc,edf,xxx&fopenids=B624064BA065E01CB73F835017FE96FA_B624064BA065E01CB73F835017FE96FB_B624064BA065E01CB73F835017FE96FC
       def infos( names, fopenids,opts={} )
         names = names.compact!.join(",")  if names.class == Array
         fopenids = fopenids.compact!.join("_")  if fopenids.class == Array
         #get 'account/profile/basic.json', :params => opts
-        get 'api/user/infos', :params => {:names => names, :fopenids => fopenids}.merge(opts).merge(@client.request_params)
+        get 'user/infos', :params => {:names => names, :fopenids => fopenids}.merge(opts).merge(@client.request_params)
       end
 
       # 获取其他人资料
       # @see http://wiki.open.t.qq.com/index.php/%E5%B8%90%E6%88%B7%E7%9B%B8%E5%85%B3/%E8%8E%B7%E5%8F%96%E5%85%B6%E4%BB%96%E4%BA%BA%E8%B5%84%E6%96%99
-      # http://open.t.qq.com/api/user/other_info?format=json&name=xxxx&fopenid=xxxx
+      # http://open.t.qq.com/user/other_info?format=json&name=xxxx&fopenid=xxxx
 
       def other_info(name, fopenid, opts={})
         #get 'account/profile/basic.json', :params => opts
-        get 'api/user/other_info', :params => {:name => name, :fopenid => fopenid}.merge(opts).merge(@client.request_params)
+        get 'user/other_info', :params => {:name => name, :fopenid => fopenid}.merge(opts).merge(@client.request_params)
       end
 
       # 验证账户是否合法
       # @see http://wiki.open.t.qq.com/index.php/%E5%B8%90%E6%88%B7%E7%9B%B8%E5%85%B3/%E9%AA%8C%E8%AF%81%E8%B4%A6%E6%88%B7%E6%98%AF%E5%90%A6%E5%90%88%E6%B3%95
-      # http://open.t.qq.com/api/user/verify
+      # http://open.t.qq.com/user/verify
       #post包体格式为：
       #format=json&name=xxxx&fopenid=xxxx
 
       def verify(opts={})
         #get 'account/profile/basic.json', :params => opts
-        post 'api/user/verify', :params => @client.request_params.merge(opts)
+        post 'user/verify', :params => @client.request_params.merge(opts)
       end
 
 
       # 获取心情微博
       # @see http://wiki.open.t.qq.com/index.php/%E5%B8%90%E6%88%B7%E7%9B%B8%E5%85%B3/%E8%8E%B7%E5%8F%96%E5%BF%83%E6%83%85%E5%BE%AE%E5%8D%9A
-      # http://open.t.qq.com/api/user/emotion
+      # http://open.t.qq.com/user/emotion
       #post包体格式为：
       #format=json&name=xxxx&fopenid=B624064BA065E01CB73F835017FE96FA&reqnum=n&pageflag=0&type=0&contenttype=xxx&emotiontype=xx&id=xxx&timestamp=xx
 
       def emotion(opts={})
         #get 'account/profile/basic.json', :params => opts
-        post 'api/user/emotion', :params => @client.request_params.merge(opts)
+        post 'user/emotion', :params => @client.request_params.merge(opts)
       end
 
       # 获取用户的教育信息 [Privilege]
@@ -202,7 +202,7 @@ module ConnectQQ
       # @option opts [String] :description    用户描述，最长不超过70个汉字
       #
       # @see http://wiki.open.t.qq.com/index.php/%E5%B8%90%E6%88%B7%E7%9B%B8%E5%85%B3/%E6%9B%B4%E6%96%B0%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF
-      # http://open.t.qq.com/api/user/update
+      # http://open.t.qq.com/user/update
       #post包体格式为：
       #format=json&nick=aaa&sex=0&year=1987&month=7&day=15&countrycode=&provincecode=&citycode=&introduction=aaaa
       def update(nick, sex, year, month, day, provincecode, countrycode, citycode, introduction, opts={})
@@ -222,7 +222,7 @@ module ConnectQQ
       #
       # @see http://open.weibo.com/wiki/2/account/profile/edu_update
       def update_edu(year, departmentid, schoolid, level, opts={})
-        post 'api/user/update_edu',:params => @client.request_params, :body => {:feildid => "1", :year => year, :departmentid => departmentid, :schoolid => schoolid, :level => level}.merge(opts)
+        post 'user/update_edu',:params => @client.request_params, :body => {:feildid => "1", :year => year, :departmentid => departmentid, :schoolid => schoolid, :level => level}.merge(opts)
       end
 
       # 修改和删除用户教育信息 [Privilege]
@@ -231,7 +231,7 @@ module ConnectQQ
       #
       # @see http://open.weibo.com/wiki/2/account/profile/edu_destroy
       def edu_destroy(fieldid,opts={})
-        post 'api/user/update_edu',:params => @client.request_params, :body => { :feildid => fieldid, :year => '', :departmentid => '', :schoolid => '', :level => ''}.merge(opts)
+        post 'user/update_edu',:params => @client.request_params, :body => { :feildid => fieldid, :year => '', :departmentid => '', :schoolid => '', :level => ''}.merge(opts)
       end
 
       # 更新当前登录用户的职业信息 [Privilege]
@@ -267,7 +267,7 @@ module ConnectQQ
       #
       # @see http://wiki.open.t.qq.com/index.php/%E5%B8%90%E6%88%B7%E7%9B%B8%E5%85%B3/%E6%9B%B4%E6%96%B0%E7%94%A8%E6%88%B7%E5%A4%B4%E5%83%8F%E4%BF%A1%E6%81%AF
       def update_head(image)
-        post 'api/user/update_head',:params => @client.request_params.merge(opts), :body => {:image => image}
+        post 'user/update_head',:params => @client.request_params.merge(opts), :body => {:image => image}
       end
 
       # 更新当前登录用户的隐私设置 [Privilege]

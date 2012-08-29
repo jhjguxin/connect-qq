@@ -1,5 +1,5 @@
 # encoding: utf-8
-module Tqq2
+module ConnectQQ
   module Interface
 
     # Users API
@@ -48,7 +48,7 @@ module Tqq2
       #http://open.t.qq.com/api/user/info?oauth_consumer_key=xxxxx&access_token=xxxxxxxxx&openid=xxxxxxxxxx&oauth_version=2.a&scope=all
       def info(opts={})
         #get 'account/profile/basic.json', :params => opts
-        get 'api/user/info', :params => opts.merge(@client.request_params)
+        get 'user/get_user_info', :params => opts.merge(@client.request_params)
       end
 
       # 获取一批人的简单资料

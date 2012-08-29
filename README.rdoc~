@@ -50,7 +50,7 @@ Ok, now you are ready to enjoy it. Sina Weibo has provided several ways to get y
 
 4.Signed Request strategy
 
-Follow this link to read more about this strategy.{站内应用开发指南}[http://open.weibo.com/wiki/%E7%AB%99%E5%86%85%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97]
+Follow this link to read more about this strategy.{【QQ登录】OAuth2.0开发文档}[http://wiki.opensns.qq.com/wiki/%E3%80%90QQ%E7%99%BB%E5%BD%95%E3%80%91OAuth2.0%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3]
 
 
   # get token using signed_request

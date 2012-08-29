@@ -1,8 +1,8 @@
 require 'oauth2'
 
-module Tqq2
+module ConnectQQ
 
-  # The Tqq2::Client class
+  # The ConnectQQ::Client class
   class Client < OAuth2::Client
 
     attr_reader :redirect_uri
@@ -57,13 +57,13 @@ module Tqq2
     # @option opts [FixNum] :max_redirects (5) maximum number of redirects to follow
     # @yield [builder] The Faraday connection builder
     def initialize(opts={}, &block)
-      id = Tqq2::Config.api_key
-      secret = Tqq2::Config.api_secret
-      @redirect_uri = Tqq2::Config.redirect_uri
+      id = ConnectQQ::Config.api_key
+      secret = ConnectQQ::Config.api_secret
+      @redirect_uri = ConnectQQ::Config.redirect_uri
 
-      options = {:site          => "https://open.t.qq.com/",
-                 :authorize_url => "/cgi-bin/oauth2/authorize",
-                 :token_url     => "/cgi-bin/oauth2/access_token",
+      options = {:site          => "https://graph.qq.com/",
+                 :authorize_url => "/oauth2.0/authorize",
+                 :token_url     => "/oauth2.0/token",
                  :raise_errors  => false,
                  :ssl           => {:verify => false}}.merge(opts)
 
@@ -137,7 +137,7 @@ module Tqq2
     #
     # @see http://tools.ietf.org/html/draft-ietf-oauth-v2-15#section-4.1
     def auth_code
-      @auth_code ||= Tqq2::Strategy::AuthCode.new(self)
+      @auth_code ||= ConnectQQ::Strategy::AuthCode.new(self)
     end
 
     # The Resource Owner Password Credentials strategy
@@ -151,7 +151,7 @@ module Tqq2
     #
     # @see http://open.weibo.com/wiki/%E7%AB%99%E5%86%85%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97
     def signed_request
-      @signed_request ||= Tqq2::Strategy::SignedRequest.new(self)
+      @signed_request ||= ConnectQQ::Strategy::SignedRequest.new(self)
     end
 
     #
@@ -161,52 +161,53 @@ module Tqq2
     def request_params
       access_token = self.token.token
       #request_params = {"oauth_consumer_key" => self.id, "access_token" => access_token, "openid" => params["openid"], "oauth_version" => "2.a", "scope" => "all"}
-      request_params = {"oauth_consumer_key" => self.id, "access_token" => access_token, "oauth_version" => "2.a"}
+      openid = JSON.parse self.account.get_openid.body.gsub("callback( ","").gsub(" );\n","")
+      request_params = {"oauth_consumer_key" => self.id, "access_token" => access_token, "oauth_version" => "2.a"}.merge(openid)
     end
 
     def account
-      @account ||= Tqq2::Interface::Account.new(self)
+      @account ||= ConnectQQ::Interface::Account.new(self)
     end
 
     def comments
-      @comments ||= Tqq2::Interface::Comments.new(self)
+      @comments ||= ConnectQQ::Interface::Comments.new(self)
     end
 
     def favorites
-      @favorites ||= Tqq2::Interface::Favorites.new(self)
+      @favorites ||= ConnectQQ::Interface::Favorites.new(self)
     end
 
     def friendships
-      @friendships ||= Tqq2::Interface::Friendships.new(self)
+      @friendships ||= ConnectQQ::Interface::Friendships.new(self)
     end
 
     def register
-      @register ||= Tqq2::Interface::Register.new(self)
+      @register ||= ConnectQQ::Interface::Register.new(self)
     end
 
     def search
-      @search ||= Tqq2::Interface::Search.new(self)
+      @search ||= ConnectQQ::Interface::Search.new(self)
     end
 
     def statuses
-      @statuses ||= Tqq2::Interface::Statuses.new(self)
+      @statuses ||= ConnectQQ::Interface::Statuses.new(self)
     end
 
     def suggestions
-      @suggestions ||= Tqq2::Interface::Suggestions.new(self)
+      @suggestions ||= ConnectQQ::Interface::Suggestions.new(self)
     end
 
     def tags
-      @tags ||= Tqq2::Interface::Tags.new(self)
+      @tags ||= ConnectQQ::Interface::Tags.new(self)
     end
 
     def trends
-      @trends ||= Tqq2::Interface::Trends.new(self)
+      @trends ||= ConnectQQ::Interface::Trends.new(self)
     end
 
     def users
 
-      @users ||= Tqq2::Interface::Users.new(self)
+      @users ||= ConnectQQ::Interface::Users.new(self)
     end
   end
 end

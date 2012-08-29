@@ -61,9 +61,9 @@ module ConnectQQ
       secret = ConnectQQ::Config.api_secret
       @redirect_uri = ConnectQQ::Config.redirect_uri
 
-      options = {:site          => "https://open.t.qq.com/",
-                 :authorize_url => "/cgi-bin/oauth2/authorize",
-                 :token_url     => "/cgi-bin/oauth2/access_token",
+      options = {:site          => "https://graph.qq.com/",
+                 :authorize_url => "/oauth2.0/authorize",
+                 :token_url     => "/oauth2.0/token",
                  :raise_errors  => false,
                  :ssl           => {:verify => false}}.merge(opts)
 
@@ -161,6 +161,7 @@ module ConnectQQ
     def request_params
       access_token = self.token.token
       #request_params = {"oauth_consumer_key" => self.id, "access_token" => access_token, "openid" => params["openid"], "oauth_version" => "2.a", "scope" => "all"}
+
       request_params = {"oauth_consumer_key" => self.id, "access_token" => access_token, "oauth_version" => "2.a"}
     end
 
