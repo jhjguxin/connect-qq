@@ -189,12 +189,12 @@ module ConnectQQ
       @search ||= ConnectQQ::Interface::Search.new(self)
     end
 
-    def statuses
-      @statuses ||= ConnectQQ::Interface::Statuses.new(self)
+    def qzone
+      @qzone ||= ConnectQQ::Interface::Qzone.new(self)
     end
 
-    def suggestions
-      @suggestions ||= ConnectQQ::Interface::Suggestions.new(self)
+    def tqq
+      @tqq ||= ConnectQQ::Interface::Tqq.new(self)
     end
 
     def tags

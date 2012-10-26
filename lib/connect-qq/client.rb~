@@ -161,8 +161,8 @@ module ConnectQQ
     def request_params
       access_token = self.token.token
       #request_params = {"oauth_consumer_key" => self.id, "access_token" => access_token, "openid" => params["openid"], "oauth_version" => "2.a", "scope" => "all"}
-      openid = JSON.parse self.account.get_openid.body.gsub("callback( ","").gsub(" );\n","")
-      request_params = {"oauth_consumer_key" => self.id, "access_token" => access_token, "oauth_version" => "2.a"}.merge(openid)
+
+      request_params = {"oauth_consumer_key" => self.id, "access_token" => access_token, "oauth_version" => "2.a"}
     end
 
     def account
